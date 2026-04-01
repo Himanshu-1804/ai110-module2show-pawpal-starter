@@ -2,6 +2,17 @@
 
 ## 1. System Design
 
+1. Let a user enter basic owner + pet info
+2. Let a user add/edit tasks, along with that task's duration and priority.
+3. Generate a daily schedule/plan based on constraints and priorities.
+
+Objects needed:
+
+Schedule Object -> Keep track of the day's schedule.
+Pet Object -> Keep track of pet info.
+Owner Object -> Properties of the basic owner.
+Task Object -> Properties of an individual task.
+
 **a. Initial design**
 
 - Briefly describe your initial UML design.
