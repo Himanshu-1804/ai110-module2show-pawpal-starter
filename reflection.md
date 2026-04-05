@@ -8,10 +8,17 @@
 
 Objects needed:
 
-Schedule Object -> Keep track of the day's schedule.
-Pet Object -> Keep track of pet info.
 Owner Object -> Properties of the basic owner.
+- Methods: `add_pet(pet)`, `get_pets()`
+
+Pet Object -> Keep track of pet info.
+- Methods: `add_task(task)`, `remove_task(task)`, `get_tasks()`
+
 Task Object -> Properties of an individual task.
+- Methods: `edit(title, duration_minutes, priority)`, `mark_complete()`
+
+Schedule Object -> Keep track of the day's schedule.
+- Methods: `generate(tasks, available_minutes)`, `explain()`
 
 **a. Initial design**
 
