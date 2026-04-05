@@ -1,3 +1,4 @@
+from collections import Counter
 from pawpal_system import Task, Pet, Owner, Scheduler
 import streamlit as st
 
@@ -96,5 +97,33 @@ if st.button("Generate schedule"):
     else:
         scheduler = Scheduler(owner=st.session_state.owner)
         scheduler.generate()
-        st.success("Schedule generated!")
-        st.text(scheduler.explain())
+
+        conflicts = scheduler.detect_conflicts()
+        if conflicts:
+            st.error(f"⚠️ {len(conflicts)} scheduling conflict(s) found — your pet may miss a task!")
+            with st.expander("See conflicts"):
+                for c in conflicts:
+                    st.warning(c)
+        else:
+            st.success("Schedule generated!")
+
+        if scheduler.scheduled_tasks:
+            time_used = sum(t.duration_minutes for t in scheduler.scheduled_tasks)
+            st.caption(f"Total time used: {time_used} / {st.session_state.owner.available_minutes} min")
+
+            time_counts = Counter(t.time for t in scheduler.scheduled_tasks if t.time)
+            conflict_times = {time for time, count in time_counts.items() if count > 1}
+
+            st.table([
+                {
+                    "Task": t.title,
+                    "Pet": t.pet_name,
+                    "Priority": t.priority,
+                    "Duration (min)": t.duration_minutes,
+                    "Time": t.time if t.time else "—",
+                    "Status": "CONFLICT" if t.time in conflict_times else "OK",
+                }
+                for t in scheduler.scheduled_tasks
+            ])
+        else:
+            st.info("No tasks fit within your available time.")
