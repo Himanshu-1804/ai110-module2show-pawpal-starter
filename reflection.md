@@ -25,10 +25,54 @@ Schedule Object -> Keep track of the day's schedule.
 - Briefly describe your initial UML design.
 - What classes did you include, and what responsibilities did you assign to each?
 
+Ans. This was the initial UML design that I had:
+
+classDiagram
+    class Owner {
+        +String name
+        +int available_minutes
+        +List~Pet~ pets
+        +add_pet(pet)
+        +get_pets()
+    }
+
+    class Pet {
+        +String name
+        +String species
+        +int age
+        +List~Task~ tasks
+        +add_task(task)
+        +remove_task(task)
+        +get_tasks()
+    }
+
+    class Task {
+        +String title
+        +int duration_minutes
+        +String priority
+        +bool completed
+        +edit(title, duration_minutes, priority)
+        +mark_complete()
+    }
+
+    class Schedule {
+        +Owner owner
+        +List~Task~ scheduled_tasks
+        +generate(tasks, available_minutes)
+        +explain()
+    }
+
+    Owner "1" --> "0..*" Pet : has
+    Pet "1" --> "0..*" Task : has
+    Schedule "1" --> "1" Owner : uses
+    Schedule "1" --> "0..*" Task : selects
+
 **b. Design changes**
 
 - Did your design change during implementation?
 - If yes, describe at least one change and why you made it.
+
+Ans. Yes, my design changed during implementation. One change was that there was no Path from Schedule to Pet. I modified the method generate in the Schedule class so that it takes no parameters. Hence, it now navigates self.owner.get_pets() internally.
 
 ---
 
