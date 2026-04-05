@@ -83,10 +83,19 @@ Ans. Yes, my design changed during implementation. One change was that there was
 - What constraints does your scheduler consider (for example: time, priority, preferences)?
 - How did you decide which constraints mattered most?
 
+Ans. The scheduler considers two constraints: total available time (tasks are skipped if they would exceed `owner.available_minutes`) and task priority (high-priority tasks are always scheduled before medium or low ones).
+
+Ans. Available time was the most fundamental constraint because no schedule is valid if it exceeds what the owner can actually do, and priority was chosen as the ranking mechanism because pet care tasks like medication and walks have clear urgency differences that the owner needs respected automatically.
+
 **b. Tradeoffs**
 
 - Describe one tradeoff your scheduler makes.
 - Why is that tradeoff reasonable for this scenario?
+
+Ans. One tradeoff that my scheduler makes is that two tasks conflict only if their time strings are identical (e.g. both "08:00"), which means only during their start time. True overlap detection would require comparing time + duration_minutes ranges.
+
+Ans. The tradeoff is reasonable in this scenario as we have multiple owners.
+
 
 ---
 
