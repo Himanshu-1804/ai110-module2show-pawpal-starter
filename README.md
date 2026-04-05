@@ -36,6 +36,35 @@ The `Scheduler` class has been extended with four features beyond basic priority
 
 ---
 
+## Testing PawPal+
+
+### Run the test suite
+
+```bash
+python -m pytest tests/test_pawpal.py -v
+```
+
+### What the tests cover
+
+29 tests across 6 categories:
+
+| Category | Tests | What's verified |
+|---|---|---|
+| **Sorting** | 4 | Tasks return in chronological HH:MM order; untimed tasks sort to the end; all-untimed list doesn't crash |
+| **Recurrence** | 5 | Daily task completion creates a new task due tomorrow; weekly creates one due in 7 days; non-recurring returns `None`; new task preserves all fields and starts incomplete |
+| **Conflict detection** | 5 | Same-time tasks produce a warning; 3 tasks at the same time produce 3 pair-wise warnings; unique times produce no warnings; `time=""` tasks are never flagged; scheduler state is never mutated |
+| **Schedule generation** | 6 | Tasks fitting exactly within the time budget are included; tasks 1 minute over are excluded; completed tasks are skipped; output order is high → medium → low; zero-minute budget yields empty schedule; tasks from multiple pets are all collected |
+| **Filtering** | 5 | Filter by pet name, by completion status, both combined, neither (returns all), and a nonexistent pet name (returns empty list) |
+| **Pet task removal** | 2 | `remove_task()` removes only the matching ID; removing a nonexistent ID leaves the list unchanged |
+
+### Confidence Level
+
+**4 / 5 stars**
+
+All 29 tests pass. Core scheduling logic (priority ordering, time budget, conflict detection, recurrence chaining) is thoroughly verified. One star is withheld because the conflict detection uses start-time matching only — two tasks at `"07:00"` of different durations are flagged as conflicting even if they wouldn't actually overlap — and the Streamlit UI has no tests at all.
+
+---
+
 ## Getting started
 
 ### Setup
